@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ButtonBox from "./ButtonBox";
 
-const UserBox = () => {
+const UserBox = ({ btnRed, btnGreen }) => {
   const [userData, setUserData] = useState([]);
-  const [borderColor, setBorderColor] = useState("black")
-  const [btnGreen, setBtnGreen] = useState("black");
-  const [btnRed, setBtnRed] = useState("black");
+
   useEffect(() => {
     axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
       console.log(res.data);
@@ -14,11 +11,22 @@ const UserBox = () => {
     });
   }, []);
   return (
-    <div style={{width: "30vw", margin: "auto"}}>
+    <div style={{border: "5px solid black", padding: "40px 60px"}}>
       {userData.map((data, idx) => {
-        return <p key={idx} style={{width: "20vw", border: `5px solid ${idx % 2 == 0 ? btnGreen : btnRed}`}}>{data.username}</p>;
+        return (
+            <div
+              key={idx}
+              style={{
+                width: "20vw",
+                border: `5px solid ${idx % 2 != 0 ? btnGreen : btnRed}`,
+                margin: "5px auto"
+              }}
+            >
+              <p>{data.username}</p>
+              <p>{data.address.city}</p>
+            </div>
+        );
       })}
-      <ButtonBox setBtnGreen={setBtnGreen} setBtnRed={setBtnRed} />
     </div>
   );
 };
